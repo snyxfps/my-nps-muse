@@ -4,7 +4,6 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Pencil, Check, X, TrendingUp, TrendingDown, Minus } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { useAuth } from '@/contexts/AuthContext';
 
 interface NpsIndicatorCardProps {
   title: string;
@@ -25,7 +24,7 @@ const variantStyles = {
   nps: 'bg-primary/5 border-primary/20',
   goal: 'bg-accent border-accent-foreground/10',
   comparison: 'bg-secondary border-secondary-foreground/10',
-  trend: 'bg-muted border-muted-foreground/10'
+  trend: 'bg-muted border-muted-foreground/10',
 };
 
 const iconStyles = {
@@ -36,7 +35,7 @@ const iconStyles = {
   nps: 'text-primary',
   goal: 'text-accent-foreground',
   comparison: 'text-secondary-foreground',
-  trend: 'text-muted-foreground'
+  trend: 'text-muted-foreground',
 };
 
 export function NpsIndicatorCard({
@@ -47,21 +46,17 @@ export function NpsIndicatorCard({
   onSave,
   loading,
   suffix = '',
-  prefix = ''
+  prefix = '',
 }: NpsIndicatorCardProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [editValue, setEditValue] = useState(value);
   const [saving, setSaving] = useState(false);
 
-  const { isAdmin } = useAuth();
-
   const handleSave = async () => {
     setSaving(true);
     const success = await onSave(editValue);
     setSaving(false);
-    if (success) {
-      setIsEditing(false);
-    }
+    if (success) setIsEditing(false);
   };
 
   const handleCancel = () => {
@@ -77,15 +72,18 @@ export function NpsIndicatorCard({
   };
 
   return (
-    <Card className={cn(
-      'relative overflow-hidden transition-all duration-300 hover:shadow-card-hover border-2',
-      variantStyles[variant],
-      loading && 'animate-pulse'
-    )}>
+    <Card
+      className={cn(
+        'relative overflow-hidden transition-all duration-300 hover:shadow-card-hover border-2',
+        variantStyles[variant],
+        loading && 'animate-pulse'
+      )}
+    >
       <CardContent className="p-5">
         <div className="flex items-start justify-between gap-3">
           <div className="flex-1 min-w-0">
             <p className="text-sm font-medium text-muted-foreground mb-1 truncate">{title}</p>
+
             {isEditing ? (
               <div className="flex items-center gap-2">
                 <Input
@@ -94,6 +92,7 @@ export function NpsIndicatorCard({
                   className="h-8 text-lg font-bold"
                   autoFocus
                 />
+
                 <Button
                   size="icon"
                   variant="ghost"
@@ -103,6 +102,7 @@ export function NpsIndicatorCard({
                 >
                   <Check className="h-4 w-4" />
                 </Button>
+
                 <Button
                   size="icon"
                   variant="ghost"
@@ -112,7 +112,6 @@ export function NpsIndicatorCard({
                 >
                   <X className="h-4 w-4" />
                 </Button>
-                )}
               </div>
             ) : (
               <div className="flex items-center gap-2">
@@ -125,24 +124,25 @@ export function NpsIndicatorCard({
                   </div>
                 ) : (
                   <span className="text-2xl font-bold text-foreground">
-                    {prefix}{value || '0'}{suffix}
+                    {prefix}
+                    {value || '0'}
+                    {suffix}
                   </span>
                 )}
-                {isAdmin && (
+
                 <Button
                   size="icon"
                   variant="ghost"
                   className="h-7 w-7 opacity-60 hover:opacity-100"
-                  onClick={() => isAdmin && setIsEditing(true)}
+                  onClick={() => setIsEditing(true)}
                 >
                   <Pencil className="h-3.5 w-3.5" />
                 </Button>
               </div>
             )}
           </div>
-          <div className={cn('p-2 rounded-lg bg-background/50', iconStyles[variant])}>
-            {icon}
-          </div>
+
+          <div className={cn('p-2 rounded-lg bg-background/50', iconStyles[variant])}>{icon}</div>
         </div>
       </CardContent>
     </Card>
