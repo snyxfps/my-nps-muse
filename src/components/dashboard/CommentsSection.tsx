@@ -29,7 +29,7 @@ interface CommentsSectionProps {
   searchQuery: string;
 }
 
-const categoryLabels = {
+const categoryLabels: Record<string, string> = {
   bug: 'Bug',
   elogio: 'Elogio',
   sugestao: 'Sugestão',
@@ -37,7 +37,7 @@ const categoryLabels = {
   suporte: 'Suporte'
 };
 
-const categoryColors = {
+const categoryColors: Record<string, string> = {
   bug: 'bg-category-bug text-white',
   elogio: 'bg-category-praise text-white',
   sugestao: 'bg-category-suggestion text-white',
@@ -45,13 +45,13 @@ const categoryColors = {
   suporte: 'bg-category-support text-nps-neutral-foreground'
 };
 
-const statusLabels = {
+const statusLabels: Record<string, string> = {
   resolvido: 'Resolvido',
   em_analise: 'Em Análise',
   pendente: 'Pendente'
 };
 
-const statusColors = {
+const statusColors: Record<string, string> = {
   resolvido: 'bg-status-resolved/20 text-status-resolved border-status-resolved/30',
   em_analise: 'bg-status-analysis/20 text-status-analysis border-status-analysis/30',
   pendente: 'bg-status-pending/20 text-status-pending border-status-pending/30'
@@ -136,7 +136,7 @@ export function CommentsSection({
   const monthName = format(new Date(year, month - 1), 'MMMM yyyy', { locale: ptBR });
 
   return (
-    <Card className="shadow-card">
+    <Card className="border bg-white/70 backdrop-blur-md shadow-xl">
       <CardHeader className="pb-4">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
@@ -146,14 +146,16 @@ export function CommentsSection({
             </CardTitle>
             <p className="text-sm text-muted-foreground mt-1 capitalize">{monthName}</p>
           </div>
+
           <Dialog open={addDialogOpen} onOpenChange={setAddDialogOpen}>
             <DialogTrigger asChild>
-              <Button size="sm" className="gap-2">
+              <Button size="sm" className="gap-2 shadow-md">
                 <Plus className="h-4 w-4" />
                 Novo Comentário
               </Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-lg">
+
+            <DialogContent className="sm:max-w-lg bg-white/80 backdrop-blur-md border">
               <DialogHeader>
                 <DialogTitle>Adicionar Comentário</DialogTitle>
               </DialogHeader>
@@ -175,20 +177,23 @@ export function CommentsSection({
               placeholder="Buscar por cliente..."
               value={searchQuery}
               onChange={(e) => onSearchChange(e.target.value)}
-              className="pl-9"
+              className="pl-9 bg-white/70 backdrop-blur"
             />
           </div>
+
           <Select
             value={categoryFilter ?? 'all'}
             onValueChange={(value) => onCategoryFilterChange(value === 'all' ? null : value)}
           >
-            <SelectTrigger className="w-full sm:w-[180px]">
+            <SelectTrigger className="w-full sm:w-[180px] bg-white/70 backdrop-blur">
               <SelectValue placeholder="Categoria" />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className="bg-white/90 backdrop-blur-md">
               <SelectItem value="all">Todas categorias</SelectItem>
               {Object.entries(categoryLabels).map(([key, label]) => (
-                <SelectItem key={key} value={key}>{label}</SelectItem>
+                <SelectItem key={key} value={key}>
+                  {label}
+                </SelectItem>
               ))}
             </SelectContent>
           </Select>
@@ -199,7 +204,10 @@ export function CommentsSection({
         {loading ? (
           <div className="space-y-4">
             {[1, 2, 3].map((i) => (
-              <div key={i} className="animate-pulse bg-muted rounded-lg p-4 h-24" />
+              <div
+                key={i}
+                className="animate-pulse rounded-xl border bg-white/50 backdrop-blur p-4 h-24"
+              />
             ))}
           </div>
         ) : comments.length === 0 ? (
@@ -212,7 +220,7 @@ export function CommentsSection({
             {comments.map((comment) => (
               <div
                 key={comment.id}
-                className="border rounded-lg p-4 hover:bg-muted/50 transition-colors"
+                className="rounded-xl border bg-white/60 backdrop-blur p-4 shadow-sm hover:bg-white/75 transition-colors"
               >
                 <div className="flex items-start justify-between gap-4">
                   <div className="flex-1 min-w-0">
@@ -223,34 +231,41 @@ export function CommentsSection({
                         {format(new Date(comment.evaluation_date), 'dd/MM/yyyy')}
                       </span>
                     </div>
+
                     <p className="text-sm text-foreground/80 mb-3">"{comment.comment}"</p>
+
                     <div className="flex items-center gap-2 flex-wrap">
                       <div className={cn('flex items-center gap-1 text-sm font-medium', getScoreColor(comment.nps_score))}>
                         <Star className="h-4 w-4 fill-current" />
                         Nota: {comment.nps_score}
                       </div>
+
                       <Badge className={cn('text-xs', categoryColors[comment.category])}>
                         {categoryLabels[comment.category]}
                       </Badge>
+
                       <Badge variant="outline" className={cn('text-xs', statusColors[comment.status])}>
                         {statusLabels[comment.status]}
                       </Badge>
                     </div>
                   </div>
+
                   <div className="flex gap-1">
                     <Button
                       size="icon"
                       variant="ghost"
-                      className="h-8 w-8"
+                      className="h-9 w-9 hover:bg-white/70"
                       onClick={() => openEditDialog(comment)}
+                      title="Editar"
                     >
                       <Pencil className="h-4 w-4" />
                     </Button>
                     <Button
                       size="icon"
                       variant="ghost"
-                      className="h-8 w-8 text-destructive hover:text-destructive"
+                      className="h-9 w-9 text-destructive hover:text-destructive hover:bg-white/70"
                       onClick={() => onDeleteComment(comment.id)}
+                      title="Excluir"
                     >
                       <Trash2 className="h-4 w-4" />
                     </Button>
@@ -263,7 +278,7 @@ export function CommentsSection({
 
         {/* Edit Dialog */}
         <Dialog open={!!editingComment} onOpenChange={(open) => !open && setEditingComment(null)}>
-          <DialogContent className="sm:max-w-lg">
+          <DialogContent className="sm:max-w-lg bg-white/80 backdrop-blur-md border">
             <DialogHeader>
               <DialogTitle>Editar Comentário</DialogTitle>
             </DialogHeader>
@@ -308,6 +323,7 @@ function CommentForm({ formData, setFormData, onSubmit, onCancel, isEdit }: Comm
             value={formData.client_name}
             onChange={(e) => setFormData(prev => ({ ...prev, client_name: e.target.value }))}
             placeholder="Nome do cliente"
+            className="bg-white/70 backdrop-blur"
           />
         </div>
         <div className="space-y-2">
@@ -316,18 +332,21 @@ function CommentForm({ formData, setFormData, onSubmit, onCancel, isEdit }: Comm
             type="date"
             value={formData.evaluation_date}
             onChange={(e) => setFormData(prev => ({ ...prev, evaluation_date: e.target.value }))}
+            className="bg-white/70 backdrop-blur"
           />
         </div>
       </div>
+
       <div className="space-y-2">
         <label className="text-sm font-medium">Comentário</label>
         <textarea
-          className="flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+          className="flex min-h-[90px] w-full rounded-md border border-input bg-white/70 backdrop-blur px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
           value={formData.comment}
           onChange={(e) => setFormData(prev => ({ ...prev, comment: e.target.value }))}
           placeholder="Comentário do cliente..."
         />
       </div>
+
       <div className="grid grid-cols-3 gap-4">
         <div className="space-y-2">
           <label className="text-sm font-medium">Nota (0-10)</label>
@@ -337,44 +356,56 @@ function CommentForm({ formData, setFormData, onSubmit, onCancel, isEdit }: Comm
             max="10"
             value={formData.nps_score}
             onChange={(e) => setFormData(prev => ({ ...prev, nps_score: parseInt(e.target.value) || 0 }))}
+            className="bg-white/70 backdrop-blur"
           />
         </div>
+
         <div className="space-y-2">
           <label className="text-sm font-medium">Categoria</label>
           <Select
             value={formData.category}
             onValueChange={(value: any) => setFormData(prev => ({ ...prev, category: value }))}
           >
-            <SelectTrigger>
+            <SelectTrigger className="bg-white/70 backdrop-blur">
               <SelectValue />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className="bg-white/90 backdrop-blur-md">
               {Object.entries(categoryLabels).map(([key, label]) => (
-                <SelectItem key={key} value={key}>{label}</SelectItem>
+                <SelectItem key={key} value={key}>
+                  {label}
+                </SelectItem>
               ))}
             </SelectContent>
           </Select>
         </div>
+
         <div className="space-y-2">
           <label className="text-sm font-medium">Status</label>
           <Select
             value={formData.status}
             onValueChange={(value: any) => setFormData(prev => ({ ...prev, status: value }))}
           >
-            <SelectTrigger>
+            <SelectTrigger className="bg-white/70 backdrop-blur">
               <SelectValue />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className="bg-white/90 backdrop-blur-md">
               {Object.entries(statusLabels).map(([key, label]) => (
-                <SelectItem key={key} value={key}>{label}</SelectItem>
+                <SelectItem key={key} value={key}>
+                  {label}
+                </SelectItem>
               ))}
             </SelectContent>
           </Select>
         </div>
       </div>
+
       <div className="flex justify-end gap-2 pt-4">
-        <Button variant="outline" onClick={onCancel}>Cancelar</Button>
-        <Button onClick={onSubmit}>{isEdit ? 'Salvar' : 'Adicionar'}</Button>
+        <Button variant="outline" onClick={onCancel} className="bg-white/70 backdrop-blur hover:bg-white/90">
+          Cancelar
+        </Button>
+        <Button onClick={onSubmit} className="shadow-md">
+          {isEdit ? 'Salvar' : 'Adicionar'}
+        </Button>
       </div>
     </div>
   );
