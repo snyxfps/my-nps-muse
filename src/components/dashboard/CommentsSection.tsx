@@ -241,27 +241,29 @@ export function CommentsSection({
                     </div>
                   </div>
                   <div className="flex gap-1">
-                    {isAdmin && (
-                    {isAdmin && (
-                    <Button
-                                                              size="icon"
-                                                              variant="ghost"
-                                                              className="h-8 w-8"
-                                                              onClick={() => openEditDialog(comment)}
-                                                            >
-                                                              <Pencil className="h-4 w-4" />
-                                                            </Button>
-                                        )}
-                                        <Button
-                                          size="icon"
-                                          variant="ghost"
-                                          className="h-8 w-8 text-destructive hover:text-destructive"
-                                          onClick={() => onDeleteComment(comment.id)}
-                                        >
-                                          <Trash2 className="h-4 w-4" />
-                                        </Button>
-                    )}
-                  </div>
+  {isAdmin && (
+    <>
+      <Button
+        size="icon"
+        variant="ghost"
+        className="h-8 w-8"
+        onClick={() => handleEdit(comment)}
+      >
+        <Pencil className="h-4 w-4" />
+      </Button>
+
+      <Button
+        size="icon"
+        variant="ghost"
+        className="h-8 w-8 text-destructive hover:text-destructive"
+        onClick={() => handleDelete(comment)}
+      >
+        <Trash2 className="h-4 w-4" />
+      </Button>
+    </>
+  )}
+</div>
+
                 </div>
               </div>
             ))}
