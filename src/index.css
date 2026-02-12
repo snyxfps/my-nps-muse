@@ -1,0 +1,124 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* NPS Dashboard Design System */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+@layer base {
+  :root {
+    --background: 220 20% 97%;
+    --foreground: 220 25% 10%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 220 25% 10%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 25% 10%;
+
+    --primary: 220 70% 50%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 220 15% 92%;
+    --secondary-foreground: 220 25% 20%;
+
+    --muted: 220 15% 95%;
+    --muted-foreground: 220 10% 45%;
+
+    --accent: 220 70% 96%;
+    --accent-foreground: 220 70% 40%;
+
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 220 15% 90%;
+    --input: 220 15% 90%;
+    --ring: 220 70% 50%;
+
+    --radius: 0.75rem;
+
+    /* NPS Semantic Colors */
+    --nps-promoter: 152 60% 45%;
+    --nps-promoter-foreground: 0 0% 100%;
+    --nps-promoter-light: 152 60% 95%;
+    
+    --nps-neutral: 45 90% 50%;
+    --nps-neutral-foreground: 45 90% 15%;
+    --nps-neutral-light: 45 90% 95%;
+    
+    --nps-detractor: 0 72% 51%;
+    --nps-detractor-foreground: 0 0% 100%;
+    --nps-detractor-light: 0 72% 96%;
+
+    /* Status Colors */
+    --status-resolved: 152 60% 45%;
+    --status-analysis: 220 70% 50%;
+    --status-pending: 45 90% 50%;
+
+    /* Category Colors */
+    --category-bug: 0 72% 51%;
+    --category-praise: 152 60% 45%;
+    --category-suggestion: 220 70% 50%;
+    --category-route: 280 60% 55%;
+    --category-support: 45 90% 50%;
+
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(220 70% 50%), hsl(220 70% 40%));
+    --gradient-promoter: linear-gradient(135deg, hsl(152 60% 45%), hsl(152 60% 35%));
+    --gradient-neutral: linear-gradient(135deg, hsl(45 90% 50%), hsl(45 90% 40%));
+    --gradient-detractor: linear-gradient(135deg, hsl(0 72% 51%), hsl(0 72% 41%));
+    --gradient-header: linear-gradient(135deg, hsl(220 25% 15%), hsl(220 25% 25%));
+
+    /* Shadows */
+    --shadow-sm: 0 1px 2px 0 hsl(220 25% 10% / 0.05);
+    --shadow-md: 0 4px 6px -1px hsl(220 25% 10% / 0.1), 0 2px 4px -2px hsl(220 25% 10% / 0.1);
+    --shadow-lg: 0 10px 15px -3px hsl(220 25% 10% / 0.1), 0 4px 6px -4px hsl(220 25% 10% / 0.1);
+    --shadow-card: 0 4px 20px -4px hsl(220 25% 10% / 0.12);
+    --shadow-card-hover: 0 8px 30px -4px hsl(220 25% 10% / 0.18);
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    font-family: 'Inter', sans-serif;
+  }
+}
+
+@layer utilities {
+  .shadow-card {
+    box-shadow: var(--shadow-card);
+  }
+  .shadow-card-hover {
+    box-shadow: var(--shadow-card-hover);
+  }
+  .gradient-primary {
+    background: var(--gradient-primary);
+  }
+  .gradient-header {
+    background: var(--gradient-header);
+  }
+  .gradient-promoter {
+    background: var(--gradient-promoter);
+  }
+  .gradient-neutral {
+    background: var(--gradient-neutral);
+  }
+  .gradient-detractor {
+    background: var(--gradient-detractor);
+  }
+}
