@@ -21,18 +21,21 @@ const App = () => (
         <AuthProvider>
           <Routes>
             <Route path="/login" element={<Login />} />
+            {/* precisa vir antes do "*" senão nunca é alcançada */}
+            <Route path="/reset-password" element={<ResetPassword />} />
+
             <Route
               path="/"
               element={
-                // DEV: basta estar autenticado
-                <ProtectedRoute>
+                // Opção A: basta estar autenticado (qualquer usuário logado pode ver)
+                <ProtectedRoute requireStaff={false}>
                   <Index />
                 </ProtectedRoute>
               }
             />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+
+            {/* catch-all SEMPRE por último */}
             <Route path="*" element={<NotFound />} />
-            <Route path="/reset-password" element={<ResetPassword />} />
           </Routes>
         </AuthProvider>
       </BrowserRouter>
